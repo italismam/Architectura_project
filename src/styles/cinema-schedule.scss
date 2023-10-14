@@ -1,0 +1,73 @@
+.cinema-schedule {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+    height: 600px;
+    overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.293), inset -3px -3px 10px rgba(0, 0, 0, 0.293);
+
+    &__header {
+        background-color: black;
+        margin: 0;
+        color: white;
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    &__item {
+        border-top: solid 1px black;
+        border-bottom: solid 1px black;
+        position: relative;
+        width: 100%;
+        flex: 1;
+        transition: 0.7s ease;
+        // filter: brightness(0.5) grayscale(100%);
+
+        &:hover {
+            flex: 1.5;
+        }
+
+        &::after {
+            content: "Ви встигаєте на цей сеанс";
+            color: white;
+            justify-content: center;
+            padding: 20px;
+            box-sizing: border-box;
+            display: none;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 80, 0, 0.499);
+            left: 0;
+        }
+
+        &--active {
+            // filter: none;
+            &::after {
+                display: flex;
+            }
+        }
+    }
+
+    &__item-time {
+        position: absolute;
+        z-index: 10;
+        left: 50%;
+        bottom: 5%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.686);
+        border-radius: 20px;
+        color: white;
+        padding: 5px 10px
+    }
+
+    &__item-poster {
+        left: 0;
+        top: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}

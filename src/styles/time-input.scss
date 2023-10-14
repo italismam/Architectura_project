@@ -1,0 +1,73 @@
+.time-input {
+    width: 200px;
+    height: 40px;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.189), inset -3px -3px 5px rgba(0, 0, 0, 0.189); 
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 25px;
+    padding: 0 20px;
+    box-sizing: border-box;
+    margin: 20px auto;
+
+    &__number-slider {
+        height: 30px;
+        width: 40px;
+        position: relative;
+    }
+
+    &__number {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        perspective: 100px;
+        transition: 0.3s ease;
+
+        &--selected {
+        }
+
+        &--prev {
+            top: -30%;
+            transform: rotateX(-90deg) translate(-50%, -50%);
+            opacity: 0;
+        }
+
+        &--next {
+            top: 70%;
+            transform: rotateX(90deg) translate(-50%, -50%);
+            opacity: 0;
+        }
+    }
+
+    &__select-button {
+        position: absolute;
+        background: url(../assets/down-icon.png);
+        border: none;
+        outline: none;
+        width: 25px;
+        height: 25px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-size: contain;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        opacity: 0.8;
+
+        &--prev {
+            top: -80%;
+            transform: rotateZ(180deg) translate(50%);
+        }
+
+        &--next {
+            top: 135%;
+        }
+
+        &--disabled {
+            pointer-events: none;
+            cursor: default;
+            opacity: 0.5;
+        }
+    }
+}

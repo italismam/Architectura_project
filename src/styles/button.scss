@@ -1,0 +1,15 @@
+.button {
+    background-color: black;
+    color: white;
+    width: max-content;
+    padding: 10px 20px;
+    border-radius: 15px;
+    margin: 0 auto;
+    cursor: pointer;
+    box-shadow: 3px 3px 4px rgba(0, 0, 0, 0.163);
+
+    &--disabled {
+        opacity: 0.5;
+        pointer-events: none;
+    }
+}

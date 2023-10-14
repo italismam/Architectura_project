@@ -1,23 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
+import Calendar from './components/organisms/Calendar/Calendar';
+import "./styles/calendar.scss"
+import "./styles/day-schedule.scss"
+import "./styles/schedule-editor.scss"
+import "./styles/time-input.scss"
+import "./styles/text-input.scss"
+import "./styles/button.scss"
+import "./styles/cinema-schedule.scss"
+import DaySchedule from './components/organisms/DaySchedule/DaySchedule';
+import { ScheduleEditor } from './components/molecules/ScheduleEditor/ScheduleEditor';
+import { useSelector } from 'react-redux';
 
 function App() {
+  const selectedDate = useSelector((state) => state.schedule.selectedDate)
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {selectedDate ?
+        <DaySchedule date={selectedDate}/>
+        :
+        <Calendar/>
+      }
     </div>
   );
 }

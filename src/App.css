@@ -1,5 +1,51 @@
+@font-face {
+  font-family: MartinMono;
+  src: url(./fonts/MartianMono-Bold.ttf);
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: MartinMono;
+  src: url(./fonts/MartianMono-ExtraBold.ttf);
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: MartinMono;
+  src: url(./fonts/MartianMono-Light.ttf);
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: MartinMono;
+  src: url(./fonts/MartianMono-Regular.ttf);
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: MartinMono;
+  src: url(./fonts/MartianMono-Medium.ttf);
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: MartinMono;
+  src: url(./fonts/MartianMono-Thin.ttf);
+  font-weight: 100;
+}
+
+* {
+  font-family: MartinMono;
+}
+
 .App {
   text-align: center;
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  gap: 40px;
 }
 
 .App-logo {

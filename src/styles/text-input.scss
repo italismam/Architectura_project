@@ -1,0 +1,19 @@
+.text-input { 
+    width: 100%;
+    height: 40px;
+    box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, 0.167), inset 3px 3px 3px rgba(0, 0, 0, 0.178), -1px -1px 0 0 white;
+    border-radius: 15px;
+    background-color: white;
+    overflow: hidden;
+    &__input {
+        outline: none;
+        border: none;
+        width: 100%;
+        height: 100%;
+        background-color: transparent;
+        resize: none;
+        box-sizing: border-box;
+        font-size: 17px;
+        padding-left: 20px;
+    }
+}
