@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { store, persistor } from '../../../app/store'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react';
-import { Outlet, Route, Router, HashRouter as RouterProvider, Routes, createBrowserRouter, createRoutesFromElements, useNavigate } from 'react-router-dom';
+import { BrowserRouter as RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { CalendarView } from '../CalendarView/CalendarView';
-import history from '../../../utils/history';
 import { ScheduleView } from '../ScheduleView/ScheduleView';
 
 const router = createBrowserRouter([
