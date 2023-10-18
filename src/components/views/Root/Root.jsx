@@ -2,7 +2,7 @@ import React from 'react'
 import { store, persistor } from '../../../app/store'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react';
-import { BrowserRouter as RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { HashRouter as RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { CalendarView } from '../CalendarView/CalendarView';
 import { ScheduleView } from '../ScheduleView/ScheduleView';
 
