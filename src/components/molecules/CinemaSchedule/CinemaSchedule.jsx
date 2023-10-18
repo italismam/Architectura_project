@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 
 const classNames = require('classnames');
 
-const CinemaScheduleItem = ({item, activity}) => {
+const CinemaScheduleItem = ({item, activity = []}) => {
   const [fitsInSchedule, setFitsInSchedule] = useState(true);
   
   useEffect(() => {
@@ -23,6 +23,7 @@ const CinemaScheduleItem = ({item, activity}) => {
   return (
     <div className={classNames('cinema-schedule__item', {'cinema-schedule__item--active': fitsInSchedule})}>
       <img className="cinema-schedule__item-poster" src={item.poster}/>
+      <div className="cinema-schedule__description">{item.description}</div>
       <div className="cinema-schedule__item-time">
         {Math.floor(item.start).toString().padStart(2, '0')}:{((item.start % 1) * 60).toString().padStart(2, '0')}
       </div>
@@ -32,7 +33,7 @@ const CinemaScheduleItem = ({item, activity}) => {
 
 export const CinemaSchedule = ({date}) => {
   const cinemaSchedule = useSelector((state) => state.schedule.cinemaSchedule)
-  const activity = useSelector((state) => state.schedule.schedule[date].activity)
+  const activity = useSelector((state) => state.schedule.schedule[date]?.activity)
 
   return (
     <div className='cinema-schedule'>

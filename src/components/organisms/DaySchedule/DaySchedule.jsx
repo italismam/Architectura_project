@@ -1,9 +1,10 @@
 import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { ScheduleEditor } from '../../molecules/ScheduleEditor/ScheduleEditor';
-import { removeFromSchedule, selectDate, updateActivity } from '../../../features/schedule/scheduleSlice';
+import { removeFromSchedule, updateActivity } from '../../../features/schedule/scheduleSlice';
 import { CinemaSchedule } from '../../molecules/CinemaSchedule/CinemaSchedule';
 import { Button } from '../../atoms/Button/Button';
+import { useNavigate } from 'react-router';
 
 const OccupiedTime = ({contentRef, activity, date}) => {
   const [startTime, setStartTime] = useState(activity.startTime);
@@ -29,16 +30,16 @@ const OccupiedTime = ({contentRef, activity, date}) => {
   }, [])
 
   const handleTopBorderMouseUp = useCallback(() => {
-    dispatch(updateActivity({id: activity.id, date: new Date(date), updatedFields: {startTime}}));
+    dispatch(updateActivity({id: activity.id, date: date, updatedFields: {startTime}}));
   }, [startTime])
 
   const handleBottomBorderMouseUp = useCallback(() => {
-    dispatch(updateActivity({id: activity.id, date: new Date(date), updatedFields: {finishTime}}));
+    dispatch(updateActivity({id: activity.id, date: date, updatedFields: {finishTime}}));
   }, [finishTime])
 
   const onNewNameSubmit = useCallback((event) => {
     event.preventDefault();
-    dispatch(updateActivity({id: activity.id, date: new Date(date), updatedFields: {name}}));
+    dispatch(updateActivity({id: activity.id, date: date, updatedFields: {name}}));
     nameInputRef.current.blur()
   }, [name])
 
@@ -67,7 +68,7 @@ const OccupiedTime = ({contentRef, activity, date}) => {
             <input ref={nameInputRef} onChange={(e) => setName(e.target.value)} value={name} className='day-schedule__occupied-time-label-change-input'/>
           </form>
         </span>
-        <button onClick={(e) => dispatch(removeFromSchedule({date: new Date(date), id: activity.id}))} className='day-schedule__occupied-time-delete-button'/>
+        <button onClick={(e) => dispatch(removeFromSchedule({date: date, id: activity.id}))} className='day-schedule__occupied-time-delete-button'/>
       </div>
       <div
         onDragEnd={handleBottomBorderMouseUp}
@@ -94,6 +95,7 @@ export default function DaySchedule({date}) {
       "Неділя"
   ]
   const contentRef = useRef(null)
+  const navigate = useNavigate();
   const dispatch = useDispatch()
 
   const activity = useSelector((state) => state.schedule.schedule[date]?.activity)
@@ -105,14 +107,14 @@ export default function DaySchedule({date}) {
       <button
         className='day-schedule__back-button'
         onClick={() => {
-          dispatch(selectDate())
+          navigate("/")
         }}
       >
         Назад
       </button>
       <div className='day-schedule'>
         <h1 className="day-schedule__header">
-            {new Date(date).toLocaleString('default', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
+            {new Date(+date).toLocaleString('default', { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
         </h1>
         <div ref={contentRef} className='day-schedule__content'>
           {arr.map((i) => <div className='day-schedule__hour-string'><span>{i.toString().padStart(2, "0")}</span></div>)}

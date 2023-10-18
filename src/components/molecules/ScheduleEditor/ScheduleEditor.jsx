@@ -2,15 +2,15 @@ import React, { useState } from 'react'
 import { TimeInput } from '../../atoms/TimeInput/TimeInput'
 import { TextInput } from '../../atoms/TextInput/TextInput'
 import { Button } from '../../atoms/Button/Button'
-import { addToSchedule, selectDate } from '../../../features/schedule/scheduleSlice'
+import { addToSchedule } from '../../../features/schedule/scheduleSlice'
 import { useDispatch } from 'react-redux'
 
 const classNames = require("classnames")
 
 export const ScheduleEditor = ({date}) => {
   const dispatch = useDispatch();
-  const [newStartTime, setNewStartTime] = useState(0);
-  const [newFinishTime, setNewFinishTime] = useState(0);
+  const [newStartTime, setNewStartTime] = useState(12);
+  const [newFinishTime, setNewFinishTime] = useState(12);
   const [name, setName] = useState("");
 
   return (
@@ -34,7 +34,7 @@ export const ScheduleEditor = ({date}) => {
         disabled={!name}
         onClick={() => {
           dispatch(addToSchedule({
-            date: new Date(date),
+            date,
             activityItem: {id: Math.random(), startTime: newStartTime, finishTime: newFinishTime, name}
           }))
         }}

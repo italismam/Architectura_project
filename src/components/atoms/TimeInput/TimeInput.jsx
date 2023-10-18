@@ -51,7 +51,7 @@ const NumberSlider = ({length, onChange, selectedNumberOnInit = 0}) => {
 }
 
 export const TimeInput = ({onChange}) => {
-  const [hours, setHours] = useState(0);
+  const [hours, setHours] = useState(12);
   const [minutes, setMinutes] = useState(0);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export const TimeInput = ({onChange}) => {
 
   return (
     <div className='time-input'>
-      <NumberSlider selectedNumberOnInit={12} onChange={(newVal) => {setHours(newVal)}} length={24}/>
+      <NumberSlider selectedNumberOnInit={hours} onChange={(newVal) => {setHours(newVal)}} length={24}/>
       <div>:</div>
       <NumberSlider onChange={(newVal) => {setMinutes(newVal)}} length={60}/>
     </div>

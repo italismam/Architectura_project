@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { selectDate } from '../../../features/schedule/scheduleSlice';
+import { selectDate, updateScheduleWithICS } from '../../../features/schedule/scheduleSlice';
+import { Link, useNavigate } from 'react-router-dom';
+const ical = require('cal-parser');
 
 const monthCount = 31
 
@@ -10,11 +12,15 @@ function getMousePos(e) {
   return {x:e.clientX,y:e.clientY};
 }
 
-const Number = ({date, activity, isPrev, isNext, isToday}) => {
+const Number = ({date, isPrev, isNext, isToday}) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const activity = useSelector((state) => state.schedule.schedule[date.getTime()]?.activity)
 
   const onClick = () => {
     dispatch(selectDate(date))
+    navigate(`/${date.getTime()}`)
   }
 
   return (
@@ -26,10 +32,10 @@ const Number = ({date, activity, isPrev, isNext, isToday}) => {
       )}
       onClick={onClick}
     >
-        {date.getDate()}
-        <div className="calendar__activity-container">
-          {activity ? activity.map(() => <div className='calendar__activity-circle'/>) : ""}
-        </div>
+      {date.getDate()}
+      <div className="calendar__activity-container">
+        {activity ? activity.map(() => <div className='calendar__activity-circle'/>) : ""}
+      </div>
     </td>
   )
 }
@@ -65,21 +71,45 @@ export default function Calendar() {
   }, [mouseTailRef, calendarRef])
 
   const [weeksByDays, setWeekByDays] = useState([[]]);
+  const dispatch = useDispatch();
 
-  const daysArr = useMemo(() => {
-    return Array.from(
-      {length: new Date(todayDate.getYear(), todayDate.getMonth() + 1, 0).getDate()},
-      (_, i) => {
-        const date = new Date(todayDate.getFullYear(), todayDate.getMonth(), i + 1);
-        return {
-          date,
-          isToday: todayDate.getDate() === date.getDate(),
-          activity: schedule[date.getTime()]?.activity ? schedule[date.getTime()].activity : []
-        }
+  const [daysArr, setDaysArr] = useState(Array.from(
+    {length: new Date(todayDate.getYear(), todayDate.getMonth() + 1, 0).getDate()},
+    (_, i) => {
+      const date = new Date(todayDate.getFullYear(), todayDate.getMonth(), i + 1);
+      return {
+        date,
+        isToday: todayDate.getDate() === date.getDate(),
       }
-    )
-  }, [])
-  
+    }
+  ))
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const icalText = event.target.result;
+        const parsed = ical.parseString(icalText);
+
+        dispatch(updateScheduleWithICS(parsed.events))
+      };
+
+      reader.readAsText(file);
+
+      setDaysArr(Array.from(
+        {length: new Date(todayDate.getYear(), todayDate.getMonth() + 1, 0).getDate()},
+        (_, i) => {
+          const date = new Date(todayDate.getFullYear(), todayDate.getMonth(), i + 1);
+          return {
+            date,
+            isToday: todayDate.getDate() === date.getDate(),
+          }
+        }
+      ))
+    }
+  };
+
   useEffect(() => {
     let firstDayInMonth = new Date(todayDate.getFullYear(), todayDate.getMonth(), 1);
 
@@ -123,32 +153,39 @@ export default function Calendar() {
     weeksByDaysTemp[weeksByDaysTemp.length - 1] = [...weeksByDaysTemp[weeksByDaysTemp.length - 1], ...nextDaysArr]
 
     setWeekByDays(weeksByDaysTemp)
-  }, [])
+
+    console.log(daysArr)
+  }, [daysArr])
 
   return (
     <div style={{paddingBottom: 40}}>
-        <h1 className="calendar__month-title">{todayDate.toLocaleString('default', { month: 'long' })}</h1>
-        <table
-          onMouseLeave={onTableMouseLeave}
-          onMouseEnter={onTableMouseEnter}
-          onMouseMove={onTableMouseMove}
-          ref={calendarRef}
-          className='calendar'
-        >
-            <div className="calendar__background">
-              <div ref={mouseTailRef} className="calendar__mouse-tail"></div>
-            </div>
-            <tr className='calendar__header'>
-                {daysOfAWeek.map((el) => <th>{el}</th>)}
-            </tr>
-            {weeksByDays.map((el) => (
-                <tr>
-                    {el.map(a => (
-                        <Number {...a}/>
-                    ))}
-                </tr>
+      <h1 className="calendar__month-title">{todayDate.toLocaleString('default', { month: 'long' })}</h1>
+      <table
+        onMouseLeave={onTableMouseLeave}
+        onMouseEnter={onTableMouseEnter}
+        onMouseMove={onTableMouseMove}
+        ref={calendarRef}
+        className='calendar'
+      >
+        <div className="calendar__background">
+          <div ref={mouseTailRef} className="calendar__mouse-tail"></div>
+        </div>
+        <tr className='calendar__header'>
+          {daysOfAWeek.map((el) => <th>{el}</th>)}
+        </tr>
+        {weeksByDays.map((el) => (
+          <tr>
+            {el.map(a => (
+              <Number {...a}/>
             ))}
-        </table>
+          </tr>
+        ))}
+      </table>
+        
+      <button style={{marginTop: 20}} className='button'>
+        Завантажити розклад з ics файлу
+        <input type="file" accept=".ics" onChange={handleFileChange} />
+      </button>
     </div>
   )
 }
