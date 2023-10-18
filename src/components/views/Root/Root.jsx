@@ -21,7 +21,7 @@ export const Root = () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <RouterProvider basename="/cinema_calendar" router={router} />
+        <RouterProvider router={router} />
       </PersistGate>
     </Provider>
   )
